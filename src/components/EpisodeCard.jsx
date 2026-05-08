@@ -18,10 +18,10 @@ const EpisodeCard = ({ animeId, episode, currentEp, layout }) => {
     const score = episode.score ?? 0;
 
     if (score <= 1) return colors.Bad;
-    if (score <= 2) return colors.Mid;
-    if (score <= 3) return colors.Good;
-    if (score <= 4) return colors.Awesome;
-    if (score <= 5) return colors.AbsoluteCinema;
+    if (score >= 2) return colors.Mid;
+    if (score >= 3.5) return colors.Good;
+    if (score >= 4) return colors.Awesome;
+    if (score >= 4.6) return colors.AbsoluteCinema;
     // if (score > 4) return colors.Good;
 
     return colors.Bad;
