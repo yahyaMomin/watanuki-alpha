@@ -29,7 +29,14 @@ const Watch = () => {
   const pagination = data?.pagination;
 
   const currentEp = useMemo(() => {
-    return episodes.find((episode) => episode.mal_id === ep);
+    if (episodes.length > 1) {
+      return episodes.find((episode) => episode.mal_id === ep);
+    } else {
+      return {
+        filler: false,
+        mal_id: 1,
+      };
+    }
   }, [episodes, ep]);
 
   useEffect(() => {
@@ -64,6 +71,15 @@ const Watch = () => {
   if (isLoading) {
     return <Loader className="h-screen" />;
   }
+
+  const legendItems = [
+    { label: "Absolute Cinema", color: "rgb(29, 161, 242)" },
+    { label: "Awesome", color: "rgb(40, 180, 99)" },
+    { label: "Good", color: "rgb(244, 208, 63)" },
+    { label: "Mid", color: "rgb(243, 156, 18)" },
+    { label: "Bad", color: "rgb(231, 76, 60)" },
+    { label: "Filler", color: "#7C5C99" },
+  ];
 
   return (
     <div className="min-h-screen bg-backGround text-white">
@@ -101,11 +117,13 @@ const Watch = () => {
 
         {/* Toolbar */}
         <div className="flex mx-2 items-center justify-between">
-          <Pagination
-            currentPage={page}
-            totalPages={pagination.last_visible_page}
-            onChange={(page) => setPage(page)}
-          />
+          {pagination.last_visible_page > 1 && (
+            <Pagination
+              currentPage={page}
+              totalPages={pagination.last_visible_page}
+              onChange={(page) => setPage(page)}
+            />
+          )}
           <div className="flex bg-lightbg rounded-lg overflow-hidden">
             <button
               onClick={() => setLayout("list")}
@@ -128,23 +146,42 @@ const Watch = () => {
         </div>
 
         {/* Episodes */}
-        <div
-          className={`grid gap-3 ${
-            layout === "list"
-              ? "grid-cols-1"
-              : "grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10"
-          }`}
-        >
-          {episodes.map((episode) => (
-            <EpisodeCard
-              key={episode.mal_id}
-              animeId={id}
-              episode={episode}
-              currentEp={currentEp}
-              layout={layout}
-            />
+
+        <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-white/10 bg-lightbg p-4">
+          {legendItems.map((item) => (
+            <div
+              key={item.label}
+              className="flex items-center gap-2 rounded-lg bg-black/20 px-3 py-2"
+            >
+              <div
+                className="size-4 rounded-full border border-white/10"
+                style={{ backgroundColor: item.color }}
+              />
+              <span className="text-sm font-medium text-white/80">
+                {item.label}
+              </span>
+            </div>
           ))}
         </div>
+        {episodes.length > 1 && (
+          <div
+            className={`grid gap-3 ${
+              layout === "list"
+                ? "grid-cols-1"
+                : "grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10"
+            }`}
+          >
+            {episodes.map((episode) => (
+              <EpisodeCard
+                key={episode.mal_id}
+                animeId={id}
+                episode={episode}
+                currentEp={currentEp}
+                layout={layout}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

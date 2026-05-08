@@ -3,19 +3,38 @@ import { Link } from "react-router-dom";
 const EpisodeCard = ({ animeId, episode, currentEp, layout }) => {
   const isActive = currentEp?.mal_id === episode.mal_id;
 
+  const colors = {
+    Bad: "rgb(231, 76, 60)",
+    Mid: "rgb(243, 156, 18)",
+    Good: "rgb(244, 208, 63)",
+    Awesome: "rgb(40, 180, 99)",
+    AbsoluteCinema: "rgb(29, 161, 242)",
+    Filler: "#7C5C99",
+  };
+
+  const getEpisodeColor = (episode) => {
+    if (episode.filler) return colors.Filler;
+
+    const score = episode.score ?? 0;
+
+    if (score <= 1) return colors.Bad;
+    if (score <= 2) return colors.Mid;
+    if (score <= 3) return colors.Good;
+    if (score <= 4) return colors.Awesome;
+    if (score <= 5) return colors.AbsoluteCinema;
+    // if (score > 4) return colors.Good;
+
+    return colors.Bad;
+  };
   return (
     <Link
       to={`/watch/${animeId}?ep=${episode.mal_id}`}
-      className={`
-        rounded-xl transition-all duration-200
-        ${
-          isActive
-            ? "bg-primary text-black"
-            : episode.filler
-              ? "bg-red-500/20 border border-red-500"
-              : "bg-lightbg hover:bg-btnbg"
-        }
-      `}
+      className="rounded-xl transition-all duration-200 border"
+      style={{
+        backgroundColor: isActive ? "var(--primary)" : getEpisodeColor(episode),
+        color: isActive ? "#000" : "#fff",
+        borderColor: isActive ? "var(--primary)" : getEpisodeColor(episode),
+      }}
     >
       {layout === "list" ? (
         <div className="p-4 flex items-center gap-4">

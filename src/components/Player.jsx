@@ -5,6 +5,8 @@ import {
 } from "react-icons/tb";
 
 const Player = ({ id, currentEp, changeEpisode, hasNextEp, hasPrevEp }) => {
+  console.log(currentEp);
+
   const [category, setCategory] = useState("sub");
 
   return (
