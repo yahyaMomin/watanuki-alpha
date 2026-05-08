@@ -9,7 +9,7 @@ const Player = ({ id, currentEp, changeEpisode, hasNextEp, hasPrevEp }) => {
 
   return (
     <div className="space-y-4">
-      <div className="overflow-hidden rounded-2xl bg-black aspect-video shadow-lg">
+      <div className="overflow-hidden bg-black aspect-video">
         <iframe
           src={`https://megaplay.buzz/stream/mal/${id}/${currentEp.mal_id}/${category}`}
           width="100%"
@@ -18,7 +18,7 @@ const Player = ({ id, currentEp, changeEpisode, hasNextEp, hasPrevEp }) => {
         />
       </div>
 
-      <div className="bg-lightbg rounded-2xl p-4 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="bg-lightbg p-4 flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           {["sub", "dub"].map((type) => (
             <button
@@ -52,7 +52,7 @@ const Player = ({ id, currentEp, changeEpisode, hasNextEp, hasPrevEp }) => {
         </div>
 
         <div className="text-center md:text-right">
-          <p className="font-medium">Episode {currentEp.episodeNumber}</p>
+          <p className="font-medium">Episode {currentEp.mal_id}</p>
 
           {currentEp.filler && (
             <p className="text-red-400 text-sm">Filler Episode</p>

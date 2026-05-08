@@ -153,3 +153,8 @@ input:focus {
   color: #fff;
   opacity: 0.5;
 }
+.item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
